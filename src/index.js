@@ -1,17 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, {useState} from 'react';
+import ReactDom from 'react-dom';
+import AuthPage from './AuthPage';
+import NavBar from './NavBar';
+import TaskPage from './TaskPage';
+import TasksPage from './TasksPage';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const task = {
+    id: 1,
+    name: 'Blue line',
+    text: 'Each pixel of <a href = "image.png">this picture</a> mean something...but what? Your task is to find out what they mean together.'
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const MainPage = () => {
+    return (
+        <>
+            <NavBar name={"test team"} score={112}/>
+            <TaskPage {...task}/>
+        </>
+    )
+}
+
+ReactDom.render(<MainPage />, document.getElementById('root'));
