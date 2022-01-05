@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ReactDom from 'react-dom';
-import AuthPage from './AuthPage';
-import NavBar from './NavBar';
-import TaskPage from './TaskPage';
-import TasksPage from './TasksPage';
+import {useRoutes} from "./Routes";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {useAuth} from './Auth'
+import { AuthContext } from './AuthContext';
+import './app.css';
 
 const task = {
     id: 1,
@@ -11,13 +12,24 @@ const task = {
     text: 'Each pixel of <a href = "image.png">this picture</a> mean something...but what? Your task is to find out what they mean together.'
 }
 
-const MainPage = () => {
+
+const RouterComponent = () => {
+    const {token, teamName, teamId, onLoggedIn, onLoggedOut} = useAuth();
+    const authenticated = !!token;
+    const routes = useRoutes(authenticated, teamName, onLoggedIn, onLoggedOut);
     return (
-        <>
-            <NavBar name={"test team"} score={112}/>
-            <TaskPage {...task}/>
-        </>
-    )
+        <AuthContext.Provider value = {{token: token, teamId: teamId}}>
+        <Router>
+            {routes}
+        </Router>
+        </AuthContext.Provider>
+    );
 }
 
-ReactDom.render(<MainPage />, document.getElementById('root'));
+const App = () => {
+    return (<div className='body' style={{height: '100vh'}}>
+        <RouterComponent/>
+    </div>);
+}
+
+ReactDom.render(<App />, document.getElementById('root'));

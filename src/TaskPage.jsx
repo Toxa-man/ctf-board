@@ -1,10 +1,12 @@
 import React from 'react'
+import { useParams } from 'react-router-dom';
 
-const TaskPage = (props) => {
+const TaskPage = () => {
+    const {id} = useParams();
     return (
         <div className='m-3'>
-            <Task {...props}/>
-            <SubmitForm {...props}/>
+            <Task {...{id: id}}/>
+            <SubmitForm />
         </div>
     )
 }

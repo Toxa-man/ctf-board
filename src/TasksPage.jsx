@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const tasks = [{
     id: 1,
@@ -52,7 +53,7 @@ const tasks = [{
 
 const TasksPage = () => {
     return (
-        <div className='m-3' style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 300px', gap: '5px'}}>
+        <div className='m-3' style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 300px', gap: '5px' }}>
             {tasks.map((task, index) => {
                 return <Task key={task.id} {...task} />
             })}
@@ -63,7 +64,7 @@ const TasksPage = () => {
 
 
 
-const Task = ({id, name, category, reward, solved }) => {
+const Task = ({ id, name, category, reward, solved }) => {
 
     const [inside, setInside] = useState(false);
 
@@ -76,12 +77,11 @@ const Task = ({id, name, category, reward, solved }) => {
     }
     return (
         <>
-            <a href={`/tasks/${id}`} style={{textDecoration: 'none', textDecorationColor: 'none'}}>
+            <Link to={`/tasks/${id}`} style={{ textDecoration: 'none', textDecorationColor: 'none' }}>
                 <div className="px-2"
                     style={{
                         color: 'rgb(31, 45, 61)',
-                        outline: `solid ${inside ? 2: 1}px`,
-                        outlineColor: 'grey',
+                        outline: `grey solid ${inside ? 2 : 1}px`,
                         minWidth: '300px',
                         backgroundColor: solved ? 'lightgreen' : 'mintcream'
                     }}
@@ -93,7 +93,7 @@ const Task = ({id, name, category, reward, solved }) => {
                         <p className='text-end'>{reward}pts</p>
                     </h4>
                 </div>
-            </a>
+            </Link>
         </>
 
     )

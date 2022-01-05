@@ -1,25 +1,46 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
+import { useState } from 'react';
+import './NavBar.css'
 
-const NavBar = ({ name, score }) => {
+const Score = ({teamName}) => {
+    const [score, setScore] = useState(null);
+    const location = useLocation();
+
+    useEffect(() => {
+        const score = "515";
+        setScore(score);
+    }, [location])
+    return (<>
+        <span className="navbar-text navbar-item pe-3">
+            Hi {teamName}, you have {score} points
+        </span>
+    </>)
+}
+
+const NavBar = ({ teamName, onLoggedOut }) => {
+
+    const logout = (e) => {
+        e.preventDefault();
+        onLoggedOut();
+    }
+
     return (
-        <nav className="navbar navbar-expand navbar-light bg-light">
+        <nav className="navbar navbar-expand" style={{backgroundColor: 'rgb(117, 71, 71)'}}>
             <div className='container-fluid'>
-                <a className="navbar-brand" href="#">CTF board</a>
+                <span className="navbar-brand navbar-item">CTF board</span>
 
-                <ul className="navbar-nav mr-auto">
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Tasks</a>
+                <ul className="navbar-nav  mr-auto">
+                    <li className="nav-item nav">
+                        <NavLink className="nav-link navbar-link" to="/tasks">Tasks</NavLink>
                     </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Score board</a>
+                    <li className="nav-item ">
+                        <NavLink className="nav-link navbar-link" to="/scoreboard">Score board</NavLink>
                     </li>
                 </ul>
                 <div>
-                    <span className="navbar-text pe-3">
-                        Hi {name}, you have {score} points
-                    </span>
-                        
-                    <button className="btn nav-item" type="button">Logout</button>
+                    <Score teamName={teamName}/>
+                    <button className="btn nav-item navbar-link" type="button" onClick={logout} style={{marginTop: '-6px'}}>Logout</button>
                 </div>
 
 
