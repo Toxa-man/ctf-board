@@ -1,0 +1,19 @@
+.auth-form {
+    background-color: rgb(117, 71, 71);
+    width: '35%';
+    border: '1px solid';
+    margin-top: '10rem';
+    color:rgb(255, 255, 255);
+}
+
+a {
+    color:rgb(189, 189, 189);
+}
+
+a:visited {
+    color:rgb(255, 255, 255);
+}
+
+a:hover {
+    color:rgb(184, 184, 184);
+}

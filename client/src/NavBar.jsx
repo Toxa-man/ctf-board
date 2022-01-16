@@ -1,24 +1,34 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useState } from 'react';
 import './NavBar.css'
+import { AuthContext } from './AuthContext';
+import { useFetch } from './useFetch';
 
-const Score = ({teamName}) => {
+const Score = ({username}) => {
     const [score, setScore] = useState(null);
     const location = useLocation();
 
-    useEffect(() => {
-        const score = "515";
-        setScore(score);
+    const {request} = useFetch(true);
+
+
+    useEffect(async () => {
+        const {res} = await request('/api/score');
+        console.log('aaa res; ', res.score);
+        setScore(res.score);
     }, [location])
     return (<>
         <span className="navbar-text navbar-item pe-3">
-            Hi {teamName}, you have {score} points
+            Hi {username}, you have {score} points
         </span>
     </>)
 }
 
-const NavBar = ({ teamName, onLoggedOut }) => {
+
+const NavBar = ({ username }) => {
+
+    const {onLoggedOut} = useContext(AuthContext);
+
 
     const logout = (e) => {
         e.preventDefault();
@@ -39,7 +49,7 @@ const NavBar = ({ teamName, onLoggedOut }) => {
                     </li>
                 </ul>
                 <div>
-                    <Score teamName={teamName}/>
+                    <Score username={username}/>
                     <button className="btn nav-item navbar-link" type="button" onClick={logout} style={{marginTop: '-6px'}}>Logout</button>
                 </div>
 

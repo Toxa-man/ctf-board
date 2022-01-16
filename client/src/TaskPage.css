@@ -1,0 +1,22 @@
+.attach-link {
+    color: black;
+}
+
+.attach-link:hover {
+    color: gray
+}
+
+.attach-link:visited {
+    color: black
+}
+
+.hash-line {
+    color: rgb(14, 172, 22)
+}
+
+.line{
+    width: 112px;
+    height: 47px;
+    border-bottom: 1px solid black;
+    position: absolute;
+    }

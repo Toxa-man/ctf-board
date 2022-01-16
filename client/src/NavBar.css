@@ -1,0 +1,15 @@
+.navbar-item {
+    color: rgb(218, 216, 216);
+}
+
+.navbar-link {
+    color:rgb(218, 216, 216);
+}
+
+.navbar-link:hover {
+    color: rgb(107, 107, 107);
+}
+
+.navbar-link:focus {
+    color: rgb(116, 116, 116);
+}

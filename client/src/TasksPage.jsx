@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom';
+import ErrorBar from './ErrorBar';
+import LoadingBar from './LoadingBar';
+import { useFetch } from './useFetch';
 
 const tasks = [{
     id: 1,
@@ -51,20 +54,34 @@ const tasks = [{
     solved: true
 }];
 
+
 const TasksPage = () => {
+    const [tasks, setTasks] = useState([]);
+    const {request, loading, error, setError} = useFetch(true);
+    useEffect(async () => {
+        const {success, res} = await request('/api/tasks', 'GET');
+        setTimeout(() => setError(false), 5000);
+        setTasks(res);
+    }, [])
+
     return (
-        <div className='m-3' style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 300px', gap: '5px' }}>
-            {tasks.map((task, index) => {
-                return <Task key={task.id} {...task} />
+        <>
+        {error && <ErrorBar text={error}/>}
+        {loading && <LoadingBar/>}
+        {!error && <div className='m-3' style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 300px', gap: '5px' }}>
+            {tasks.map(task => {
+                return <Task key={task._id} {...task} />
             })}
-        </div>
+        </div>}
+        </>
+
     )
 }
 
 
 
 
-const Task = ({ id, name, category, reward, solved }) => {
+const Task = ({ _id, name, category, reward, solved }) => {
 
     const [inside, setInside] = useState(false);
 
@@ -77,7 +94,7 @@ const Task = ({ id, name, category, reward, solved }) => {
     }
     return (
         <>
-            <Link to={`/tasks/${id}`} style={{ textDecoration: 'none', textDecorationColor: 'none' }}>
+            <Link to={`/tasks/${_id}`} style={{ textDecoration: 'none', textDecorationColor: 'none' }}>
                 <div className="px-2"
                     style={{
                         color: 'rgb(31, 45, 61)',

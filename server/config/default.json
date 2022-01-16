@@ -1,0 +1,6 @@
+{
+    "mongoDB": "ctf.v1sqf.mongodb.net/ctfDB",
+    "mongoUsername": "",
+    "mongoPassword": "",
+    "jwtSecret": ""
+}
