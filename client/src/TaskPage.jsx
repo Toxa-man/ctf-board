@@ -22,30 +22,39 @@ const Task = ({ id }) => {
 
     const { loading, error, request, setError } = useFetch(true);
 
-    useEffect(async () => {
-        const { res } = await request(`/api/tasks/${id}`);
-        setTimeout(() => setError(false), 5000);
-        if (!error) {
-            setTaskData(res);
+    useEffect(() => {
+        const asyncFetch = async () => {
+            const { res } = await request(`/api/tasks/${id}`);
+            if (!error) {
+                setTaskData(res);
+            }
         }
+        asyncFetch();
+        const timer = setTimeout(() => setError(false), 5000);
+        return () => clearTimeout(timer);
     }, []);
+    if (taskData && taskData.name === "Search more" && !document.getElementsByTagName('head')[0].innerHTML.includes('BOTTLENECK')) {
+        document.getElementsByTagName('head')[0].appendChild(document.createComment("IAMTHEBOTTLENECK is what you're searching for"));
+    }
 
     return <>
         {loading && <LoadingBar />}
         {error && <ErrorBar text={error} />}
-        {taskData && <div><h1>{taskData.name}</h1>
+        {taskData && <div><h1 >{taskData.name}</h1>
             <h2 className='hash-line'>#{taskData.category} #{taskData.reward}</h2>
             <p className='mt-3'>{taskData.description}</p></div>}
-        <hr style={{ width: '45%' }} />
+        
         {taskData && taskData.attachments &&
             <div>
+                <hr style={{ width: '45%' }} />
                 <h4>Attachments:</h4>
                 {taskData.attachments.map(value => {
                     if (value.type === "file") {
-                        return <Link className='attach-link' target='_blank' download to={value.url}>{value.name}</Link>
+                        return <p><Link key={value.url} className='attach-link' target='_blank' download to={value.url}>{value.name}</Link></p>
                     } else if (value.type === 'link') {
-                        return <Link className='attach-link' to={{ pathname: value.url }} target="_blank">{value.name}</Link>
+                        return <p><Link key={value.url}  className='attach-link' to={{ pathname: value.url }} target="_blank">{value.name}</Link></p>
                     }
+                    return <></>;
                     
                 })}
             </div>}
@@ -84,11 +93,11 @@ const SubmitForm = ({ id }) => {
     return <>
         <form autoComplete='off'>
             <div className="form-group pb-3">
-                <label className='mb-2' htmlFor="answerForm">Your answer</label>
+                <label className='mb-2' htmlFor="answerForm">Your answer:</label>
                 <input type='text' className="form-control" id="answerForm" style={{ width: '45%' }} onChange={handleChange} />
             </div>
-            {!loading ? <button type="submit" className="btn btn-primary" onClick={onSubmit}>Submit</button> : <LoadingBar/>}
-            {error && <div class="alert alert-danger my-2" style={{ width: '45%', height: '30%' }} role="alert">
+            {id !== '61e4af705a00169963223029' && (!loading ? <button type="submit" className="btn btn-primary" onClick={onSubmit}>Submit</button> : <LoadingBar/>)}
+            {error && <div className="alert alert-danger my-2" style={{ width: '45%', height: '30%' }} role="alert">
                 <span>{error}</span>
             </div>}
         </form>

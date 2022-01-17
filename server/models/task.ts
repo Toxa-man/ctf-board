@@ -7,7 +7,7 @@ interface Task {
     reward: number,
     answer: string,
     category: string,
-    attachments: Array<{
+    attachments?: Array<{
         name: string,
         url: string
     }>
@@ -19,7 +19,7 @@ const taskSchema = new Schema<Task>({
     reward: Number,
     answer: String,
     category: String,
-    attachments: [{name: String, url: String}]
+    attachments: {type: [{name: String, url: String}], default: undefined}
 });
 
 const Model = model('Task', taskSchema);

@@ -4,64 +4,18 @@ import ErrorBar from './ErrorBar';
 import LoadingBar from './LoadingBar';
 import { useFetch } from './useFetch';
 
-const tasks = [{
-    id: 1,
-    name: "task1",
-    category: "web",
-    reward: 10,
-    solved: false
-},
-{
-    id: 2,
-    name: "task2",
-    category: "web",
-    reward: 100,
-    solved: true,
-},
-{
-    id: 3,
-    name: "task3",
-    category: "misc",
-    reward: 200,
-    solved: true
-},
-{
-    id: 4,
-    name: "task3",
-    category: "misc",
-    reward: 200,
-    solved: true
-},
-{
-    id: 5,
-    name: "task3",
-    category: "misc",
-    reward: 200,
-    solved: true
-},
-{
-    id: 6,
-    name: "task3",
-    category: "misc",
-    reward: 200,
-    solved: true
-},
-{
-    id: 7,
-    name: "task3",
-    category: "misc",
-    reward: 200,
-    solved: true
-}];
-
 
 const TasksPage = () => {
     const [tasks, setTasks] = useState([]);
     const {request, loading, error, setError} = useFetch(true);
-    useEffect(async () => {
-        const {success, res} = await request('/api/tasks', 'GET');
-        setTimeout(() => setError(false), 5000);
-        setTasks(res);
+    useEffect(() => {
+        const timer = setTimeout(() => {setError(false); console.log('bleat fire');}, 5000);
+        const fetchAsync = async () => {
+            const {res} = await request('/api/tasks', 'GET');
+            setTasks(res);
+        }
+        fetchAsync();
+        return () => clearTimeout(timer);
     }, [])
 
     return (
@@ -77,9 +31,6 @@ const TasksPage = () => {
 
     )
 }
-
-
-
 
 const Task = ({ _id, name, category, reward, solved }) => {
 
@@ -100,11 +51,12 @@ const Task = ({ _id, name, category, reward, solved }) => {
                         color: 'rgb(31, 45, 61)',
                         outline: `grey solid ${inside ? 2 : 1}px`,
                         minWidth: '300px',
-                        backgroundColor: solved ? 'lightgreen' : 'mintcream'
+                        backgroundColor: solved ? 'lightgreen' : 'mintcream',
+                        textOverflow: 'ellipsis'
                     }}
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}>
-                    <h1>{name}</h1>
+                    <h1 style={{fontSize: 'calc(100% + 1vw)'}}>{name}</h1>
                     <h4>{category}</h4>
                     <h4>
                         <p className='text-end'>{reward}pts</p>
