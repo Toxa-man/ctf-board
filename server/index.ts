@@ -6,6 +6,7 @@ import tasksRouter from './routes/tasks'
 import scoreRouter from './routes/score'
 import contestsRouter from './routes/contests'
 import predefinedRouter from './routes/predefined'
+import path from 'path'
 
 import express from "express"
 import { json as jsonParser } from "body-parser";
@@ -26,7 +27,13 @@ async function main() {
     app.use('/api/contests', contestsRouter);
     app.use('/assets', express.static('assets'));
     app.use('/predefined', predefinedRouter);
-    app.listen(5000, () => {
+    if (process.env.NODE_ENV === 'production') {
+        app.use(express.static(path.join(__dirname, '../', 'client_static')));
+        app.get('*', (req, res) => {
+            res.sendFile(path.resolve(__dirname, '../', 'client_static', 'index.html'))
+        });
+    }
+    app.listen(config.httpPort, () => {
         console.log('Server started');
     });
 }

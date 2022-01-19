@@ -6,7 +6,8 @@ type Config = {
     mongoDB: string,
     mongoUsername: string,
     mongoPassword: string,
-    jwtSecret: string
+    jwtSecret: string,
+    httpPort: number
 }
 
 /**

@@ -2,5 +2,6 @@
     "mongoDB": "ctf.v1sqf.mongodb.net/ctfDB",
     "mongoUsername": "",
     "mongoPassword": "",
-    "jwtSecret": ""
+    "jwtSecret": "",
+    "httpPort": 5000
 }

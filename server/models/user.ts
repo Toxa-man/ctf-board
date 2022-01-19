@@ -8,9 +8,6 @@ interface User {
     contest: Types.ObjectId
 }
 
-
-
-
 const userSchema = new Schema<User>({
     username: {type: String, required: true},
     password: {type: String, required: true},

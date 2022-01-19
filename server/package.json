@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/tsc ",
-    "start": "npm run build && node build/index.js",
+    "start": "npm run build && NODE_ENV=production node build/index.js -c config/local.json",
     "startDev": "npm run build && node build/index.js -c config/local.json",
     "dev": "./node_modules/.bin/nodemon -e ts --exec 'npm run startDev || exit 1'",
     "test": "echo \"Error: no test specified\" && exit 1"
