@@ -10,7 +10,8 @@ import path from 'path'
 import https from 'https'
 import fs from 'fs'
 
-import express from "express"
+import express, { Router } from "express"
+const subdomain = require('express-subdomain');
 import { json as jsonParser } from "body-parser";
 import { authRequired, errorHandler, logReq } from "./routes/middleware";
 
@@ -18,24 +19,34 @@ const onListening = () => {
     console.log(`Started ${config.https ? 'https' : 'http'} server on port ${config.httpPort}`);
 }
 
+const configRoutes = () => {
+    const router = Router();
+    router.use([jsonParser(), logReq]);
+    router.use(errorHandler);
+    router.use('/api/auth', authRouter);
+    router.use('/api/register', registerRouter);
+    router.use('/api/tasks', authRequired, tasksRouter);
+    router.use('/api/score', authRequired, scoreRouter);
+    router.use('/api/contests', contestsRouter);
+    router.use('/assets', express.static('assets'));
+    router.use('/predefined', predefinedRouter);
+    return router;
+}
+
 async function main() {
 
     await connect(`mongodb+srv://${config.mongoUsername}:${config.mongoPassword}@${config.mongoDB}`);
+    const mainRouter = configRoutes();
     const app = express();
-    app.use([jsonParser(), logReq]);
-    app.use(errorHandler);
-    app.use('/api/auth', authRouter);
-    app.use('/api/register', registerRouter);
-    app.use('/api/tasks', authRequired, tasksRouter);
-    app.use('/api/score', authRequired, scoreRouter);
-    app.use('/api/contests', contestsRouter);
-    app.use('/assets', express.static('assets'));
-    app.use('/predefined', predefinedRouter);
     if (process.env.NODE_ENV === 'production') {
-        app.use(express.static(path.join(__dirname, '../', 'client_static')));
-        app.get('*', (req, res) => {
+        mainRouter.use(express.static(path.join(__dirname, '../', 'client_static')));
+        mainRouter.get('*', (req, res) => {
             res.sendFile(path.resolve(__dirname, '../', 'client_static', 'index.html'))
         });
+        app.use(subdomain('ctf', mainRouter));
+    }
+    else {
+        app.use(mainRouter);
     }
     if (config.https) {
         const privateKey = fs.readFileSync(config.privateKey);

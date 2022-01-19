@@ -24,6 +24,7 @@
     "bcryptjs": "^2.4.3",
     "deepmerge": "^4.2.2",
     "express": "^4.17.2",
+    "express-subdomain": "^1.0.5",
     "jsonwebtoken": "^8.5.1",
     "yargs": "^17.3.1"
   }
