@@ -3,5 +3,8 @@
     "mongoUsername": "",
     "mongoPassword": "",
     "jwtSecret": "",
-    "httpPort": 5000
+    "httpPort": 5000,
+    "https": false,
+    "privateKey": "",
+    "certificate": ""
 }

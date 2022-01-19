@@ -7,12 +7,16 @@ import scoreRouter from './routes/score'
 import contestsRouter from './routes/contests'
 import predefinedRouter from './routes/predefined'
 import path from 'path'
+import https from 'https'
+import fs from 'fs'
 
 import express from "express"
 import { json as jsonParser } from "body-parser";
 import { authRequired, errorHandler, logReq } from "./routes/middleware";
 
-
+const onListening = () => {
+    console.log(`Start ${config.https ? 'http' : 'https'} server on port ${config.httpPort}`);
+}
 
 async function main() {
 
@@ -33,9 +37,17 @@ async function main() {
             res.sendFile(path.resolve(__dirname, '../', 'client_static', 'index.html'))
         });
     }
-    app.listen(config.httpPort, () => {
-        console.log('Server started');
-    });
+    if (config.https) {
+        const privateKey = fs.readFileSync(config.privateKey);
+        const certificate = fs.readFileSync(config.certificate);
+        https.createServer({
+            key: privateKey,
+            cert: certificate
+        }, app).listen(config.httpPort, onListening);
+    } else {
+        app.listen(config.httpPort, onListening);
+    }
+
 }
 
 main();

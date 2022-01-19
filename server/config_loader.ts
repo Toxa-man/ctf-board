@@ -7,7 +7,10 @@ type Config = {
     mongoUsername: string,
     mongoPassword: string,
     jwtSecret: string,
-    httpPort: number
+    httpPort: number,
+    https: boolean,
+    privateKey: string,
+    certificate: string
 }
 
 /**
