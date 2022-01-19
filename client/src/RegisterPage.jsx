@@ -84,9 +84,17 @@ const RegisterPage = () => {
     const [successReg, setSuccessReg] = useState(false);
 
     const onSubmit = async (username, password, contestName) => {
+        setTimeout(() => setError(null), 5000);
+        if (!username) {
+            setError('Username should not be empty');
+            return;
+        }
+        if (!password) {
+            setError('Password should not be empty');
+            return;
+        }
         const { success } = await request('/api/register', 'POST', { username, password, contestName });
         setSuccessReg(success);
-        setTimeout(() => setError(false), 5000);
 
     }
     return (<div className='reg-form'>

@@ -1,0 +1,15 @@
+.task {
+    color: rgb(31, 45, 61);
+    outline: grey solid 1px;
+    min-width: 300px;
+    background-color: mintcream;
+    text-overflow: ellipsis;
+}
+
+.task:hover {
+    outline: grey solid 2px;
+}
+
+.solved {
+    background-color:lightgreen;
+}

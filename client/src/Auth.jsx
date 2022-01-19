@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom";
 
 const storageKey = 'userData';
 
@@ -7,7 +6,6 @@ export const useAuth = () => {
     const [token, setToken] = useState(null);
     const [username, setUsername] = useState(null);
     const [userId, setUserId] = useState(null);
-    // const navigate = useNavigate();
 
     const onLoggedIn = async (token, username, userId) => {
         localStorage.setItem(storageKey, JSON.stringify({
@@ -27,7 +25,7 @@ export const useAuth = () => {
                 onLoggedIn(data.token, data.username, data.userId);
             }
         } catch (e) {
-
+            console.error(`Error occured while trying to get auth data`, e.message);
         }
 
     }, [])
@@ -37,7 +35,6 @@ export const useAuth = () => {
         setToken(null);
         setUsername(null);
         setUserId(null);
-        console.log('aaaa logged out');
     }
 
 

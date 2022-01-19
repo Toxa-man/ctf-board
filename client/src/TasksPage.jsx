@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import ErrorBar from './ErrorBar';
 import LoadingBar from './LoadingBar';
 import { useFetch } from './useFetch';
+import './TasksPage.css'
 
 
 const TasksPage = () => {
@@ -33,30 +34,11 @@ const TasksPage = () => {
 }
 
 const Task = ({ _id, name, category, reward, solved }) => {
-
-    const [inside, setInside] = useState(false);
-
-    const onMouseEnter = (e) => {
-        setInside(true);
-    }
-
-    const onMouseLeave = (e) => {
-        setInside(false);
-    }
     return (
         <>
             <Link to={`/tasks/${_id}`} style={{ textDecoration: 'none', textDecorationColor: 'none' }}>
-                <div className="px-2"
-                    style={{
-                        color: 'rgb(31, 45, 61)',
-                        outline: `grey solid ${inside ? 2 : 1}px`,
-                        minWidth: '300px',
-                        backgroundColor: solved ? 'lightgreen' : 'mintcream',
-                        textOverflow: 'ellipsis'
-                    }}
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}>
-                    <h1 style={{fontSize: 'calc(100% + 1vw)'}}>{name}</h1>
+                <div className={`px-2 task ${solved && 'solved'}`}>
+                    <h1 style={{fontSize: 'calc(0.8vw + 1vh + 1vmin)'}}>{name}</h1>
                     <h4>{category}</h4>
                     <h4>
                         <p className='text-end'>{reward}pts</p>

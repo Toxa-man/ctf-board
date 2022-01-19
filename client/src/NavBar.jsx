@@ -14,7 +14,6 @@ const Score = ({username}) => {
 
     useEffect(async () => {
         const {res} = await request('/api/score');
-        console.log('aaa res; ', res.score);
         setScore(res.score);
     }, [location])
     return (<>

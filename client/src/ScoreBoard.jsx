@@ -2,22 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
 import LoadingBar from './LoadingBar'
 import { useFetch } from './useFetch'
-const data = [{
-    teamName: 'team1',
-    score: '56'
-},
-{
-    teamName: 'team2',
-    score: '57'
-},
-{
-    teamName: 'team3',
-    score: '123'
-},
-{
-    teamName: 'team4',
-    score: '653'
-}]
 
 const Row = ({ username, score, index, current }) => {
     return (<>
@@ -26,7 +10,6 @@ const Row = ({ username, score, index, current }) => {
             <td>{username}</td>
             <td>{score}</td>
         </tr>
-
     </>)
 }
 

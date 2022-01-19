@@ -4,7 +4,6 @@ import {useWindowSize} from './useWindowSize'
 
 import './SuccessPage.css';
 
-
 const SuccessPage = () => {
 
     const {width, height} = useWindowSize();

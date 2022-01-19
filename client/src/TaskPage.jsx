@@ -12,7 +12,7 @@ const TaskPage = () => {
         <div className='m-3'>
             <Task {...{ id: id }} />
             <hr style={{ width: '45%' }} />
-            <SubmitForm {...{id: id}}/>
+            <SubmitForm {...{ id: id }} />
         </div>
     )
 }
@@ -40,25 +40,33 @@ const Task = ({ id }) => {
     return <>
         {loading && <LoadingBar />}
         {error && <ErrorBar text={error} />}
-        {taskData && <div><h1 >{taskData.name}</h1>
-            <h2 className='hash-line'>#{taskData.category} #{taskData.reward}</h2>
-            <p className='mt-3'>{taskData.description}</p></div>}
-        
-        {taskData && taskData.attachments &&
-            <div>
-                <hr style={{ width: '45%' }} />
-                <h4>Attachments:</h4>
-                {taskData.attachments.map(value => {
-                    if (value.type === "file") {
-                        return <p><Link key={value.url} className='attach-link' target='_blank' download to={value.url}>{value.name}</Link></p>
-                    } else if (value.type === 'link') {
-                        return <p><Link key={value.url}  className='attach-link' to={{ pathname: value.url }} target="_blank">{value.name}</Link></p>
-                    }
-                    return <></>;
-                    
-                })}
-            </div>}
+        {taskData && <TaskInfo {...taskData}/>}
+        {taskData && taskData.attachments && <Attachments {...taskData}/>}
     </>
+}
+
+const TaskInfo = ({name, category, reward, description}) => {
+    return (<>
+        <h1 >{name}</h1>
+        <h2 className='hash-line'>#{category} #{reward}</h2>
+        <p className='mt-3'>{description}</p>
+    </>);
+}
+
+const Attachments = ({ attachments }) => {
+    return <div>
+        <hr style={{ width: '45%' }} />
+        <h4>Attachments:</h4>
+        {attachments.map(value => {
+            if (value.type === "file") {
+                return <p><Link key={value.url} className='attach-link' target='_blank' download to={value.url}>{value.name}</Link></p>
+            } else if (value.type === 'link') {
+                return <p><Link key={value.url} className='attach-link' to={{ pathname: value.url }} target="_blank">{value.name}</Link></p>
+            }
+            return <></>;
+
+        })}
+    </div>
 }
 
 const SubmitForm = ({ id }) => {
@@ -71,12 +79,12 @@ const SubmitForm = ({ id }) => {
 
     const [gaveRightAnswer, setGaveRightAnswer] = useState(false);
 
-    const { loading, request, error, setError} = useFetch(true);
+    const { loading, request, error, setError } = useFetch(true);
 
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const {success} = await request('/api/tasks/submit', 'POST', { taskId: id, answer: answer });
+        const { success } = await request('/api/tasks/submit', 'POST', { taskId: id, answer: answer });
         if (success) {
             setGaveRightAnswer(true);
         }
@@ -96,7 +104,7 @@ const SubmitForm = ({ id }) => {
                 <label className='mb-2' htmlFor="answerForm">Your answer:</label>
                 <input type='text' className="form-control" id="answerForm" style={{ width: '45%' }} onChange={handleChange} />
             </div>
-            {id !== '61e4af705a00169963223029' && (!loading ? <button type="submit" className="btn btn-primary" onClick={onSubmit}>Submit</button> : <LoadingBar/>)}
+            {id !== '61e4af705a00169963223029' && (!loading ? <button type="submit" className="btn btn-primary" onClick={onSubmit}>Submit</button> : <LoadingBar />)}
             {error && <div className="alert alert-danger my-2" style={{ width: '45%', height: '30%' }} role="alert">
                 <span>{error}</span>
             </div>}

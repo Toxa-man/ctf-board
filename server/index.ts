@@ -15,7 +15,7 @@ import { json as jsonParser } from "body-parser";
 import { authRequired, errorHandler, logReq } from "./routes/middleware";
 
 const onListening = () => {
-    console.log(`Start ${config.https ? 'http' : 'https'} server on port ${config.httpPort}`);
+    console.log(`Started ${config.https ? 'https' : 'http'} server on port ${config.httpPort}`);
 }
 
 async function main() {

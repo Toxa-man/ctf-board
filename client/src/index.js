@@ -1,16 +1,10 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import { useRoutes } from "./Routes";
-import { BrowserRouter, BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter} from 'react-router-dom';
 import { useAuth } from './Auth'
 import { AuthContext } from './AuthContext';
 import './app.css';
-
-const task = {
-    id: 1,
-    name: 'Blue line',
-    text: 'Each pixel of <a href = "image.png">this picture</a> mean something...but what? Your task is to find out what they mean together.'
-}
 
 
 const RouterComponent = () => {
