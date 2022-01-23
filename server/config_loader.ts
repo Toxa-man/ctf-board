@@ -10,8 +10,7 @@ type Config = {
     httpPort: number,
     https: boolean,
     privateKey: string,
-    certificate: string,
-    webhookSecret: string
+    certificate: string
 }
 
 /**

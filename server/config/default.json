@@ -6,6 +6,5 @@
     "httpPort": 5000,
     "https": false,
     "privateKey": "",
-    "certificate": "",
-    "webhookSecret": ""
+    "certificate": ""
 }
