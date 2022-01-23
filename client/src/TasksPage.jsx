@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import ErrorBar from './ErrorBar';
 import LoadingBar from './LoadingBar';
@@ -10,7 +10,7 @@ const TasksPage = () => {
     const [tasks, setTasks] = useState([]);
     const {request, loading, error, setError} = useFetch(true);
     useEffect(() => {
-        const timer = setTimeout(() => {setError(false); console.log('bleat fire');}, 5000);
+        const timer = setTimeout(() => setError(false), 5000);
         const fetchAsync = async () => {
             const {res} = await request('/api/tasks', 'GET');
             setTasks(res);
@@ -38,7 +38,7 @@ const Task = ({ _id, name, category, reward, solved }) => {
         <>
             <Link to={`/tasks/${_id}`} style={{ textDecoration: 'none', textDecorationColor: 'none' }}>
                 <div className={`px-2 task ${solved && 'solved'}`}>
-                    <h1 style={{fontSize: 'calc(0.8vw + 1vh + 1vmin)'}}>{name}</h1>
+                    <h1 style={{fontSize: 'calc(0.7vw + 1vh + 1vmin)'}}>{name}</h1>
                     <h4>{category}</h4>
                     <h4>
                         <p className='text-end'>{reward}pts</p>

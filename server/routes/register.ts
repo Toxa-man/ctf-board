@@ -2,12 +2,13 @@ import {Router} from 'express'
 import bcrypt from 'bcryptjs'
 import User from '../models/user';
 import Contest from '../models/contest';
+import { wrapper } from './middleware';
 
 const router = Router();
 
 
 router.post('/', async (req, res) => {
-    try {
+    wrapper(res, async () => {
         const {username, password, contestName} = req.body;
         if (await User.exists({username: username})) {
             return res.status(400).json({message: `User with name ${username} already exists`});
@@ -25,11 +26,7 @@ router.post('/', async (req, res) => {
         });
         newUser.save();
         return res.status(200).json({});
-    } catch (e) {
-        if (e instanceof Error) {
-            return res.status(400).json({message: e.message});
-        }
-    }
+    });
 
 })
 

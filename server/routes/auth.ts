@@ -1,13 +1,14 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import User from "../models/user"
 import { compare } from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import config from '../config_loader'
+import { wrapper } from "./middleware";
 
 const router = Router();
 
 router.post('/', async (req, res) => {
-    try {
+    wrapper(res, async () => {
         const {username, password} = req.body;
         const user = await User.findOne({username: username});
         if (!user) {
@@ -21,11 +22,7 @@ router.post('/', async (req, res) => {
             expiresIn: '6h'
         });
         return res.status(200).json({userId: user._id, token: token});
-    } catch (e) {
-        if (e instanceof Error) {
-            res.status(400).json({message: e.message});
-        }
-    }
+    });
 });
 
 export default router;

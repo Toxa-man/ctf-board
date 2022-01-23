@@ -17,11 +17,14 @@ const ScoreBoard = () => {
 
     const {loading, error, request} = useFetch(true);
     const [teamsData, setTeamsData] = useState([]);
-    useEffect(async () => {
-        const {res} = await request('/api/score/board');
-        if (!error) {
-            setTeamsData(res);
+    useEffect(() => {
+        const asyncFunc = async () => {
+            const {res} = await request('/api/score/board');
+            if (!error) {
+                setTeamsData(res);
+            }
         }
+        asyncFunc();
     }, []);
 
     const {userId} = useContext(AuthContext);

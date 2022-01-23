@@ -1,11 +1,12 @@
 import { Router } from "express";
 import  Task from '../models/task'
 import User from "../models/user";
+import { wrapper } from "./middleware";
 
 const router = Router();
 
 router.get('/', async (req, res) => {
-    try {
+    wrapper(res, async () => {
         if (!req.query.userId) {
             return res.status(400).json({message: 'No userId in request'});
         }
@@ -15,30 +16,21 @@ router.get('/', async (req, res) => {
         });
         const tasks = await Promise.all(tasksPromises);
         res.status(200).json(tasks);
-    } catch (e) {
-        if (e instanceof Error) {
-            res.status(400).json({message: e.message});
-        }
-    }
+    });
 });
 
 router.get('/:id', async (req, res) => {
-    try {
+    wrapper(res, async () => {
         const task = await Task.findById(req.params.id, 'name reward category description attachments');
         if (!task) {
             throw new Error(`No task with id ${req.params.id} presented`);
         }
         return res.status(200).json(task.toObject());
-    } catch (e) {
-        if (e instanceof Error) {
-            res.status(400).json({message: e.message});
-        }
-        
-    }
+    });
 })
 
 router.post('/submit', async (req, res) => {
-    try {
+    wrapper(res, async () => {
         const {taskId, answer} = req.body;
         const task = await Task.findById(taskId, 'answer reward');
         const user = await User.findById(req.query.userId);
@@ -53,11 +45,7 @@ router.post('/submit', async (req, res) => {
         user.solvedTasks.push(taskId);
         await user.save();
         return res.status(200).json({});
-    } catch (e) {
-        if (e instanceof Error) {
-            return res.status(400).json({message: e.message});
-        }
-    }
+    })
 })
 
 

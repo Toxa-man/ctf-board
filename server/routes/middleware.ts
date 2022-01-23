@@ -31,3 +31,14 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
         next()
     }
 }
+
+export const wrapper = async (res: any, callback: any) => {
+    try {
+        await callback();
+    } catch (e) {
+        if (e instanceof Error) {
+            res.status(400).json({message: e.message});
+        }
+    }
+}
+

@@ -2,14 +2,21 @@
     color: rgb(218, 216, 216);
 }
 
+
 .navbar-link {
     color:rgb(218, 216, 216);
+    text-decoration: none;
+    margin-left: 1em;
 }
 
 .navbar-link:hover {
     color: rgb(107, 107, 107);
 }
 
-.navbar-link:focus {
+.navbar-link:active {
+    color: rgb(116, 116, 116);
+}
+
+.navbar-link.active {
     color: rgb(116, 116, 116);
 }

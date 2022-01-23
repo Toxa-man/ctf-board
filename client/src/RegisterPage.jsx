@@ -36,13 +36,16 @@ const Form = ({ onSubmit, loading }) => {
 
     const [selectedContest, setSelectedContest] = useState('');
 
-    useEffect(async () => {
-        const { res } = await request('/api/contests');
-        if (error) {
-            return;
+    useEffect(() => {
+        const asyncFunc = async() => {
+            const { res } = await request('/api/contests');
+            if (error) {
+                return;
+            }
+            setContests(res);
+            setSelectedContest(res[0].name);
         }
-        setContests(res);
-        setSelectedContest(res[0].name);
+        asyncFunc();
     }, []);
 
     const handleContestChange = (e) => {
