@@ -1,8 +1,9 @@
 
 import { Webhooks, createNodeMiddleware } from "@octokit/webhooks";
+import config from '../config_loader'
 
 const webhooks = new Webhooks({
-    secret: "secctfhook",
+    secret: config.webhookSecret,
 });
 
 webhooks.on('push', event => {
