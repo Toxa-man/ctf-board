@@ -6,7 +6,6 @@ import tasksRouter from './routes/tasks'
 import scoreRouter from './routes/score'
 import contestsRouter from './routes/contests'
 import predefinedRouter from './routes/predefined'
-import webhooksRouter from './routes/webhooks'
 import path from 'path'
 import https from 'https'
 import fs from 'fs'
@@ -31,7 +30,6 @@ const configRoutes = () => {
     router.use('/api/contests', contestsRouter);
     router.use('/assets', express.static('assets'));
     router.use('/predefined', predefinedRouter);
-    router.use(webhooksRouter);
     return router;
 }
 
