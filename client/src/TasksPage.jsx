@@ -10,18 +10,16 @@ const TasksPage = () => {
     const [tasks, setTasks] = useState([]);
     const {request, loading, error, setError} = useFetch(true);
     useEffect(() => {
-        const timer = setTimeout(() => setError(false), 5000);
         const fetchAsync = async () => {
             const {res} = await request('/api/tasks', 'GET');
             setTasks(res);
         }
         fetchAsync();
-        return () => clearTimeout(timer);
     }, [])
 
     return (
         <>
-        {error && <ErrorBar text={error}/>}
+        {error && <ErrorBar text={error} clearError={() => setError(null)}/>}
         {loading && <LoadingBar/>}
         {!error && <div className='m-3' style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 300px', gap: '5px' }}>
             {tasks.map(task => {

@@ -87,7 +87,6 @@ const RegisterPage = () => {
     const [successReg, setSuccessReg] = useState(false);
 
     const onSubmit = async (username, password, contestName) => {
-        setTimeout(() => setError(null), 5000);
         if (!username) {
             setError('Username should not be empty');
             return;
@@ -102,7 +101,7 @@ const RegisterPage = () => {
     }
     return (<div className='reg-form'>
         <div className='mx-auto' style={{ minWidth: 250, maxWidth: 600 }}>
-            {error && <ErrorBar text={error} />}
+            {error && <ErrorBar text={error} clearError={() => setError(null)} />}
             <Header />
             <Form {...{ onSubmit, loading }} />
             {successReg && <span className='mb-2'>You have succeffully registered, you can <Link to='/auth'> login</Link> now</span>}

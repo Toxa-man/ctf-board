@@ -13,7 +13,6 @@ const AuthPage = ({onLoggedIn}) => {
     
     const onSubmit = async (username, password) => {
         const {success, res} = await request('/api/auth', 'POST', {username: username, password: password});
-        setTimeout(() => setError(false), 5000);
         if (!success) {
             return;
         }
@@ -26,7 +25,7 @@ const AuthPage = ({onLoggedIn}) => {
         <div>
             <div className='auth-form'>
                 <div className='mx-auto' style={{ minWidth: 250, maxWidth: 600}}>
-                    {error && <ErrorBar text={error}/>}
+                    {error && <ErrorBar text={error} clearError={() => setError(null)}/>}
                     <Header/>
                     <AuthForm {...{onSubmit, loading}}/>
                 </div>
@@ -64,7 +63,7 @@ const AuthForm = ({onSubmit, loading}) => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="passwordForm" className="form-label">Password</label>
-                        <input type="password" className="form-control" id="passwordForm" name='password' onChange={onChange}/>
+                        <input type="password" className="form-control" autoComplete='current-password' id="passwordForm" name='password' onChange={onChange}/>
                     </div>
                     {!loading ? <button type="submit" className="btn btn-secondary mb-2" onClick={(e) => {e.preventDefault(); onSubmit(formData.username, formData.password)}}>Login</button> : <LoadingBar/>}
                 </form>
