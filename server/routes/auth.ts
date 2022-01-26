@@ -8,7 +8,7 @@ import { wrapper } from "./middleware";
 const router = Router();
 
 router.post('/', async (req, res) => {
-    wrapper(res, async () => {
+    wrapper(req, res, async () => {
         const {username, password} = req.body;
         const user = await User.findOne({username: username});
         if (!user) {

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Counter } from "prom-client";
 import  Task from '../models/task'
 import User from "../models/user";
 import { wrapper } from "./middleware";
@@ -6,7 +7,7 @@ import { wrapper } from "./middleware";
 const router = Router();
 
 router.get('/', async (req, res) => {
-    wrapper(res, async () => {
+    wrapper(req, res, async () => {
         if (!req.query.userId) {
             return res.status(400).json({message: 'No userId in request'});
         }
@@ -20,7 +21,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    wrapper(res, async () => {
+    wrapper(req, res, async () => {
         const task = await Task.findById(req.params.id, 'name reward category description attachments');
         if (!task) {
             throw new Error(`No task with id ${req.params.id} presented`);
@@ -29,12 +30,19 @@ router.get('/:id', async (req, res) => {
     });
 })
 
+const taskSubmittedCount = new Counter({
+    name: 'task_submitted_count',
+    help: 'Task submitted count',
+    labelNames: ['result', 'task_name']
+})
+
 router.post('/submit', async (req, res) => {
-    wrapper(res, async () => {
+    wrapper(req, res, async () => {
         const {taskId, answer} = req.body;
         const task = await Task.findById(taskId, 'answer reward');
         const user = await User.findById(req.query.userId);
         if (task?.answer !== answer) {
+            taskSubmittedCount.inc({result: 'failure', task_name: task?.name});
             return res.status(400).json({message: 'Wrong answer'});
         }
         if (user?.solvedTasks.indexOf(taskId) !== -1) {
@@ -44,6 +52,7 @@ router.post('/submit', async (req, res) => {
         user.score += task!.reward;
         user.solvedTasks.push(taskId);
         await user.save();
+        taskSubmittedCount.inc({result: 'success', task_name: task?.name});
         return res.status(200).json({});
     })
 })

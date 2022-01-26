@@ -7,10 +7,11 @@ const router = Router();
 collectDefaultMetrics();
 
 router.get('/', (req, res) => {
-    wrapper(res, async () => {
+    wrapper(req, res, async () => {
         res.set('Content-Type', register.contentType);
         res.end(await register.metrics());
     });
-})
+});
+
 
 export default router;
