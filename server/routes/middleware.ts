@@ -44,6 +44,10 @@ export const authRequired: RequestHandler = (req, res, next) =>  {
     }
 }
 
+export const httpRedirect: RequestHandler = (req, res, next) => {
+    req.secure ? next() : res.redirect(`https://${req.headers.host}${req.url}`);
+}
+
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if (err) {
         console.log('Invalid Request data, error: ', err)

@@ -14,7 +14,7 @@ import fs from 'fs'
 import express, { Router } from "express"
 const subdomain = require('express-subdomain');
 import { json as jsonParser } from "body-parser";
-import { authRequired, errorHandler, logReq } from "./routes/middleware";
+import { authRequired, errorHandler, httpRedirect, logReq } from "./routes/middleware";
 
 const onListening = () => {
     console.log(`Started ${config.https ? 'https' : 'http'} server on port ${config.httpPort}`);
@@ -58,9 +58,7 @@ async function main() {
             cert: certificate
         }, app).listen(config.httpPort, onListening);
         const redirect = express();
-        redirect.get('*', (req, res) => {
-            return res.redirect(`https://'${req.headers.host}${req.url}`);
-        });
+        redirect.get('*', httpRedirect);
         redirect.listen(80);
     } else {
         app.listen(config.httpPort, onListening);
