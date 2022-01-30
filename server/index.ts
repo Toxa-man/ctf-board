@@ -57,6 +57,11 @@ async function main() {
             key: privateKey,
             cert: certificate
         }, app).listen(config.httpPort, onListening);
+        const redirect = express();
+        redirect.get('*', (req, res) => {
+            return res.redirect(`https://'${req.headers.host}${req.url})`);
+        });
+        redirect.listen(80);
     } else {
         app.listen(config.httpPort, onListening);
     }
