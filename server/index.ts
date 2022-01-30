@@ -59,7 +59,7 @@ async function main() {
         }, app).listen(config.httpPort, onListening);
         const redirect = express();
         redirect.get('*', (req, res) => {
-            return res.redirect(`https://'${req.headers.host}${req.url})`);
+            return res.redirect(`https://'${req.headers.host}${req.url}`);
         });
         redirect.listen(80);
     } else {
