@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
         if (!req.query.userId) {
             return res.status(400).json({message: 'No userId in request'});
         }
-        const tasksPromises = (await Task.find({}, 'name reward category _id')).map(async task => {
+        const tasksPromises = (await Task.find({}, 'name reward category _id').sort('reward')).map(async task => {
             const solved = (await User.findOne({_id: req.query.userId}))?.solvedTasks.indexOf(task._id) !== -1;
             return {...task.toObject(), solved};
         });
